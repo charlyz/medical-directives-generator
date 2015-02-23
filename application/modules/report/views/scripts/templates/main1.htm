@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>[afficher.titre]</title>
+	</head>
+	
+	<body>
+		<h1>[afficher.titre]</h1>
+		
+			<h2> Table des matières </h2>
+
+			<ol>
+			  <li> [afficher.avantpropos.titre] </li>
+			  <li> [afficher.introduction.titre] </li>
+			  <li> Le scanner et les images en coupe </li>
+			  <ol>
+			  	[tmObjet;block=begin]
+			    <li> [tmObjet.nom] </li>
+				[tmObjet;block=end]
+			  </ol>
+			  <li> Les intervenants </li>
+			  <ol>
+			  	[tmAgent;block=begin]
+			    <li> [tmAgent.nom] </li>
+				[tmAgent;block=end]
+			  </ol>
+			  <li> Concrètement </li>
+			  <ol>
+			  	[tmDirective;block=begin]
+			    <li> [tmDirective.nom] </li>
+				[tmDirective;block=end]
+			  </ol>
+			</ol>
+			
+			<h2>1. [afficher.avantpropos.titre]</h2>
+			<p>[afficher.avantpropos.texte]</p>
+			
+			<h2>2. [afficher.introduction.titre]</h2>
+			<p>[afficher.introduction.texte]</p>
+			
+			<h2>3. Le scanner et les images en coupe</h2>
+
+			[objet;block=begin]
+			<h3>3.[objet.#] [objet.nom]</h3>
+			<table cellspacing="0">
+			<tr>
+			  <td><p Align="justify">[objet.definition]</p></td>
+			  <td><img  src="[objet.image]" width="250" height="160" hspace="50"></td>
+			</tr>
+			</table>
+			[objet;block=end]
+			
+			<h2>4. Les intervenants</h2>
+			
+			<p>Durant le scanner, l'intervenant suivant s'occupera de vous :</p>
+			
+			[agent;block=begin]
+				<h3>4.[agent.#] [agent.nom]</h3>
+				<p>[agent.definition]</p>
+			[agent;block=end]
+			
+			<h2>5. Concrètement</h2>
+			[directive;block=begin;sub1=children]
+				<h3>5.[directive.#] [directive.nom]</h3>
+				<p>[directive.definition]</p>
+					<h4>Durée</h4>
+					<p>La réalisation d'un scanner dure entre [directive.duree_min] et [directive.duree_max] minutes</p>
+					<h4>Précautions</h4>
+					<p>[directive.Précautions]</p>
+					<h4>Inconvénients</h4>
+					<p>[directive.Inconvénients]</p>
+					[directive_sub1;block=begin;sub1=children]
+					<!--  <h4>5.[directive.#].[directive_sub1.#] SousTache Test - [directive_sub1.nom]</h4>
+					[directive_sub1_sub1;block=begin]
+					<h4>5.[directive.#].[directive_sub1.#].[directive_sub1_sub1.#] SousTache Test - [directive_sub1_sub1.nom]</h4>
+					[directive_sub1_sub1;block=end]
+					[directive_sub1;block=end]-->
+			[directive;block=end]
+		
+	</body>
+
+</html>

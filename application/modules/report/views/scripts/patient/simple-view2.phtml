@@ -1,0 +1,70 @@
+<?php
+
+require_once ('TinyButStrong/tbs_class_php5.php');
+
+$cp = $this->cp;
+$config = $this->config;
+$TBS = new clsTinyButStrong ( );
+$TBS->LoadTemplate ( APPLICATION_PATH . '/modules/report/views/scripts/templates/main1.htm' );
+
+$GLOBALS['titre'] = $config->name;
+
+$agent = array();
+$objet = array();
+$directive = array();
+
+$i = 1;
+foreach ($config->report->paragraphs as $para)
+{
+	if($para instanceof Model_Configuration_ReportParagraphs)
+	{
+		//echo $this->partial($para->layout().'.phtml', array('cp'=>$cp, 'config'=>$config, 'title'=>$para->title(), 'indentation'=>$i, 'content'=>$para->content));
+		//$paragraphes[$para->title] = array('titre'=>$para->title, 'texte'=>$para->content);
+		$GLOBALS[$para->name] = array('titre'=>$para->title, 'texte'=>$para->content );
+	}elseif($para instanceof Model_Configuration_ReportAgents)
+	{
+		foreach($config->agents as $agConf)
+		{
+			$ag = $cp->agents_model->getAgentFromId($agConf->id_agent);
+			$mapping = $ag->getTemplateMappingArray($agConf);
+			$agent[] = $mapping;
+		}
+		
+	}elseif($para instanceof Model_Configuration_ReportDirectives)
+	{
+		$directive = getDirectivesMapping($config->directives, $cp);
+	}elseif($para instanceof Model_Configuration_ReportObjects)
+	{
+		foreach($config->objects as $objConf)
+		{
+			$obj = $cp->objects_model->getObjectFromId($objConf->id_object);
+			$mapping = $obj->getTemplateMappingArray($objConf);
+			$objet[] = $mapping;
+		}
+		
+	}
+	$i++;
+}
+
+function getDirectivesMapping($tab, $cp)
+{
+	$res = array();
+	foreach($tab as $v)
+	{
+		$d = $cp->processes_model->getNodeFromIdInAllGraphs($v['directive']->id_node);
+		$directive = $d->getTemplateMappingArray($v['directive']);
+		$tmp = array('children'=> getDirectivesMapping($v['children'], $cp));
+		$tmp= array_merge($directive, $tmp);
+		$res[] = $tmp;
+	}
+	return $res;
+}
+
+$TBS->MergeBlock ( 'agent', $agent );
+$TBS->MergeBlock ( 'tmAgent', $agent );
+$TBS->MergeBlock ( 'objet', $objet );
+$TBS->MergeBlock ( 'tmObjet', $objet );
+$TBS->MergeBlock ( 'directive', $directive );
+$TBS->MergeBlock ( 'tmDirective', $directive );
+$TBS->Show ();
+

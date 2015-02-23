@@ -1,0 +1,67 @@
+<?php 
+
+$cp = $this->cp;
+$config = $this->config;
+$indentation = $this->indentation;
+echo '<h2>'.$indentation.'.'.' '.$this->title.'</h2>';
+
+$i = 1;
+foreach($config->directives as $dConf)
+{
+	$d = $cp->processes_model->getNodeFromIdInAllGraphs($dConf->id_node);
+	
+	echo '<h3>'.$indentation.'.'.$i.' '.$d->name().'</h3>';
+	
+	$decorations = $d->getDecorationsFromDirectiveConfig($dConf);
+	$definition = $d->definition;
+	$deco_text = array();
+	
+	foreach($decorations as $k=>$deco)
+	{
+		if($deco->type == 'definition')
+		{
+			$definition = $deco->decoration;
+		}else
+		{
+			if(isset($deco_text[$deco->type]) && !is_array($deco_text[$deco->type])) $deco_text[$deco->type] = array();
+			$deco_text[$deco->type][] = $deco->decoration;
+		}
+	}
+	
+	$showDuration = false;
+	if(isset($d->duration_max) && isset($d->duration_min))
+	{
+		$duration =($d->duration_max+$d->duration_min)/2;
+		$duration_text = '';
+		if($duration<60) $duration_text = round($duration).' secondes';
+		elseif($duration<3600) $duration_text = round(($duration/60)).' minutes';
+		elseif($duration<3600*24) $duration_text = round(($duration/3600)).' heures';
+		else $duration_text = round(($duration/3600*24)).' jours';
+		$showDuration = true;
+	}
+?>
+
+<!-- <p Align="justify"><?php echo nl2br($definition); ?></p> -->
+
+<?php  if($showDuration) {?>
+<h4>Durée</h4>
+
+<p Align="justify"><?php echo $d->name ?> dure approximativement <?php echo $duration_text?>.</p>
+<?php } ?>
+<?php 
+
+foreach($deco_text as $type=>$texts)
+{
+	echo '<h4>'.$type.'</h4>';
+	foreach($texts as $t)
+	{
+		echo '<p Align="justify">'.nl2br($t).'</p>';
+	}
+}	
+
+?>
+
+<?php	
+	$i++;
+}
+?>

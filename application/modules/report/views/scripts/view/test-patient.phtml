@@ -1,0 +1,29 @@
+<?php
+
+$cp = $this->cp;
+$config = $this->config;
+$this->headTitle($config->name);
+
+echo '<h1>'.$config->name.'</h1>';
+
+if($config->report->showContents)
+	echo $this->partial('contents.phtml', array('cp'=>$cp, 'config'=>$config));
+$i = 1;
+foreach ($config->report->paragraphs as $para)
+{
+	if($para instanceof Model_Configuration_ReportObjects)
+	{
+		echo $this->partial($para->layout().'.phtml', array('cp'=>$cp, 'config'=>$config, 'title'=>$para->title(), 'indentation'=>$i));
+	}elseif($para instanceof Model_Configuration_ReportAgents)
+	{
+		echo $this->partial($para->layout().'.phtml', array('cp'=>$cp, 'config'=>$config, 'title'=>$para->title(), 'indentation'=>$i));
+	}elseif($para instanceof Model_Configuration_ReportDirectives)
+	{
+		echo $this->partial($para->layout().'.phtml', array('cp'=>$cp, 'config'=>$config, 'title'=>$para->title(), 'indentation'=>$i));
+	}elseif($para instanceof Model_Configuration_ReportParagraphs)
+	{
+		echo $this->partial($para->layout().'.phtml', array('cp'=>$cp, 'config'=>$config, 'title'=>$para->title(), 'indentation'=>$i, 'content'=>$para->content));
+	}
+	$i++; 
+}
+

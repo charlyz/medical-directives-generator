@@ -1,0 +1,44 @@
+<?php 
+
+$cp = $this->cp;
+$config = $this->config;
+
+echo '<h2>Table des matières</h2>';
+
+echo '<ol>';
+foreach ($config->report->paragraphs as $para)
+{
+	echo '<li>'.$para->title().'</li>';
+	if($para instanceof Model_Configuration_ReportObjects)
+	{
+		echo '<ol>';
+		foreach($config->objects as $objConf)
+		{
+			$obj = $cp->objects_model->getObjectFromId($objConf->id_object);
+			echo '<li>'.$obj->name.'</li>';
+		}
+		echo '</ol>';
+	}elseif($para instanceof Model_Configuration_ReportAgents)
+	{
+		echo '<ol>';
+		foreach($config->agents as $agConf)
+		{
+			$ag = $cp->agents_model->getAgentFromId($agConf->id_agent);
+			echo '<li>'.$ag->name.'</li>';
+		}
+		echo '</ol>';
+	}elseif($para instanceof Model_Configuration_ReportDirectives)
+	{
+		echo '<ol>';
+		foreach($config->directives as $dConf)
+		{
+			$d = $cp->processes_model->getNodeFromIdInAllGraphs($dConf->id_node);
+			echo '<li>'.$d->name().'</li>';
+		}
+		echo '</ol>';
+	}elseif($para instanceof Model_Configuration_ReportParagraphs)
+	{
+
+	}
+}
+echo '</ol>';

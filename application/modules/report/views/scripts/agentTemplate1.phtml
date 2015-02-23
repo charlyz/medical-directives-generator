@@ -1,0 +1,29 @@
+<?php 
+
+$cp = $this->cp;
+$config = $this->config;
+$indentation = $this->indentation;
+echo '<h2>'.$indentation.'.'.' '.$this->title.'</h2>';
+
+$i = 1;
+foreach($config->agents as $agConf)
+{
+	$ag = $cp->agents_model->getAgentFromId($agConf->id_agent);
+	
+	echo '<h3>'.$indentation.'.'.$i.' '.$ag->name.'</h3>';
+	
+	$decorations = $ag->getDecorationsFromAgentConfig($agConf);
+	$definition = $ag->definition;
+
+	foreach($decorations as $deco)
+	{
+		if($deco->type == 'definition')
+		{
+			$definition = $deco->decoration;
+		}
+	}
+	
+	echo nl2br($definition);	
+	$i++;
+}
+?>

@@ -1,0 +1,23 @@
+Hello, world!
+<br /><br />
+<?php echo $this->itineraire; ?><br /><br />
+Agents:<br />
+<?php 
+	
+	$this->headTitle('Mon titre');
+	foreach($this->tab as $agent => $controledAttributes)
+	{
+		echo " - ".$agent." controle ";
+		foreach($controledAttributes as $att)
+		{
+			echo $att.", ";
+		}
+		echo "<br />";
+	}
+	
+?>
+
+
+
+
+<!-- <?php echo $this->graphMapContent; ?> <img src="<?php echo $this->baseUrl(); ?><?php echo $this->graphImgSrc; ?>" usemap="#G"/> -->

@@ -1,0 +1,19 @@
+<?
+
+require_once ('TinyButStrong/tbs_class.php');
+
+$TBS = new clsTinyButStrong ( );
+$TBS->LoadTemplate ( APPLICATION_PATH . '/modules/report/views/scripts/templates/template.htm' );
+
+$objects = $this->objects;
+$agents = $this->agents;
+
+foreach ( $objects as $array )
+	$row1 [] = $array;
+
+foreach ( $agents as $array )
+	$row2 [] = $array;
+
+$TBS->MergeBlock ( 'blk1', $row1 );
+$TBS->MergeBlock ( 'blk2', $row2 );
+$TBS->Show ();

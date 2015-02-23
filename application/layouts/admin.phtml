@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * Layout de la partie administration
+ */
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+echo $this->doctype() 
+?>
+
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<?php 
+		echo $this->headTitle();
+	    echo $this->headScript();
+	    echo $this->headLink();   
+	    ?>
+	</head>
+	<script type="text/javascript">
+	
+		function addFormField(tab, formName) {
+			var id = document.getElementById("id").value;
+
+			var options = '';
+			for(k in tab)
+			{
+				options = options + "<option value='"+k+"'>" + tab[k] + "</option>";
+			}
+				
+			
+			$("#"+formName).append("<p id='row" + id + "'><label for='txt" + id + "'>Name " + id + "&nbsp;&nbsp;<input type='text' size='20' name='txt[]' id='txt" + id + "'> <label for='txt" + id + "'>  to node &nbsp;&nbsp; <select name='node[]' id='node" + id + "'>"+options+"</select> &nbsp;&nbsp<a href='#' onClick='removeFormField(\"#row" + id + "\"); return false;'>Remove</a><p>");
+			$('#row' + id).highlightFade({
+				speed:1000
+			});
+			id = (id - 1) + 2;
+			document.getElementById("id").value = id;
+		}
+	
+		function removeFormField(id) {
+			$(id).remove();
+		}
+	
+	</script>
+	<body>
+		<!-- Place réservée pour le titre -->
+		<!--  --><h1><?php echo $this->placeholder('title') ?></h1>
+		
+		<!-- Place réservée pour les messages  -->
+		<?php if(is_array($this->Msgs) && count($this->Msgs)>0):  ?>
+			<div class="Msgs">
+				<ul>
+				<?php foreach($this->Msgs as $v): ?>
+					<li><?php echo $v; ?></li>
+				<?php endforeach ?>
+				</ul>
+			</div>
+		<? endif ?>
+		
+		<!-- afficher le contenu de la variable $content à l'aide du helper layout() -->
+		<?php echo $this->layout()->content ?>
+		<br />
+		<br />
+	</body>
+
+</html>

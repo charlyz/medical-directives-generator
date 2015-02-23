@@ -1,0 +1,42 @@
+<?php 
+
+$cp = $this->cp;
+$config = $this->config;
+$indentation = $this->indentation;
+echo '<h2>'.$indentation.'.'.' '.$this->title.'</h2>';
+
+$i = 1;
+foreach($config->objects as $objConf)
+{
+	$obj = $cp->objects_model->getObjectFromId($objConf->id_object);
+	
+	echo '<h3>'.$indentation.'.'.$i.' '.$obj->name.'</h3>';
+	
+	$decorations = $obj->getDecorationsFromObjectConfig($objConf);
+	$definition = $obj->definition;
+	$picture = '';
+	
+	foreach($decorations as $deco)
+	{
+		if($deco->type == 'definition')
+		{
+			$definition = $deco->decoration;
+		}elseif ($deco->type == 'image')
+		{
+			$picture = $deco->decoration;
+		}
+	}
+	
+?>
+
+<table cellspacing="0">
+<tr>
+  <td><p Align="justify"><?php echo nl2br($definition);?><p></td>
+  <td><font style="color:red"><img  src="<?php echo $picture;?>" width="250" hspace="50"></td>
+</tr>
+</table>
+
+<?php	
+	$i++;
+}
+?>

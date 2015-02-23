@@ -1,0 +1,19 @@
+<?php 
+
+$cp = $this->cp;
+$config = $this->config;
+$indentation = $this->indentation;
+echo '<h2>'.$indentation.'.'.' '.$this->title.'</h2>';
+echo '<table border=1>';
+$i = 1;
+foreach($config->directives as $dConf)
+{
+	$d = $cp->processes_model->getNodeFromIdInAllGraphs($dConf->id_node);
+	
+	echo '<tr><td>'.$d->name().'</td></tr>';
+
+	
+}
+echo '</table>';	
+?>
+

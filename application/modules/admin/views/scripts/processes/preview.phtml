@@ -1,0 +1,19 @@
+<?php 
+
+	$this->headTitle('Aperçu du workflow');
+?>
+
+<?php if(is_array($this->Msgs) && count($this->Msgs)>0):  ?>
+<div class="Msgs">
+	<ul>
+	<?php foreach($this->Msgs as $v): ?>
+		<li><?php echo $v; ?></li>
+	<?php endforeach ?>
+	</ul>
+</div>
+<? endif ?>
+
+<h1>Aperçu du workflow</h1>
+
+<?php echo $this->graphMapContent; ?>
+<img src="<?php echo $this->baseUrl(); ?><?php echo $this->graphImgSrc; ?>" usemap="#G"/> 
